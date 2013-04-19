@@ -30,8 +30,8 @@ clean:
 	find . -name "*.annot" | xargs rm
 
 annot: build
-    ( cd lib &&                                                     \
-      for n in `\ls -1 ../dist/build/lib-revisions/*.annot` ; do    \
-        ln -sf $$n ;                                                \
-      done                                                          \
-    )
+	( cd lib &&                                                     \
+	  for n in `\ls -1 ../dist/build/lib-revisions/*.annot` ; do    \
+	    ln -sf $$n ;                                                \
+	  done                                                          \
+	)
