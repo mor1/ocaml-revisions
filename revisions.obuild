@@ -1,0 +1,20 @@
+name: revisions
+version: 0.0.1
+synopsis: Revisions framework
+description:
+  OCaml implementation of the Revisions framework from MSR.
+license: ISC
+author: Richard Mortier <mort@cantab.net>
+homepage: http://github.com/mor1/revisions
+
+obuild-ver: 1
+
+library revisions
+  path: lib
+  modules: revisions
+  build-deps: lwt, lwt.syntax
+
+#test simple
+#  path: lib_tests
+#  main-is: simple.ml
+#  build-deps: revisions
