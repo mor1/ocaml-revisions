@@ -17,6 +17,8 @@ FLAGS ?=
 CFLAGS ?= --annot
 BFLAGS ?= 
 
+OCAMLDOC=ocamlfind ocamldoc -html -sort -v -colorize-code -all-params
+
 all: configure build
 
 configure:
@@ -27,6 +29,7 @@ build: configure
 
 clean:
 	obuild clean
+	$(RM) -r doc
 	find . -name "*.annot" | xargs rm
 
 annot: 
@@ -34,4 +37,11 @@ annot:
 	  for n in `\ls -1 ../dist/build/lib-revisions/*.annot` ; do    \
 	    ln -sf $$n ;                                                \
 	  done                                                          \
+	)
+
+doc: $(wildcard lib/*.ml*)
+	( mkdir -p doc && cd doc &&						\
+	  for n in `\ls -1 ../lib/revisions.mli` ; do	\
+	    $(OCAMLDOC) $$n ;							\
+	  done											\
 	)
