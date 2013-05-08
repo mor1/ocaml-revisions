@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Revisions.Revision.html">
+<link rel="Up" href="Revisions.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Revisions" rel="Chapter" href="Revisions.html"><title>Revisions.Versioned</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Revisions.Revision.html" title="Revisions.Revision">Previous</a>
+&nbsp;<a class="up" href="Revisions.html" title="Revisions">Up</a>
+&nbsp;</div>
+<h1>Module type <a href="type_Revisions.Versioned.html">Revisions.Versioned</a></h1>
+<pre><span class="keyword">module type</span> Versioned = <code class="code"><span class="keyword">sig</span></code> <a href="Revisions.Versioned.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Implements the <em>isolation type</em> referred to above. Used to declare data
+    shared between concurrently executing <em>revisions</em>.<br>
+</div>
+<hr width="100%">
+<pre><span class="keyword">module</span> <a href="Revisions.Versioned.R.html">R</a>: <code class="type"><a href="Revisions.Revision.html">Revisions.Revision</a></code><code class="type"> </code></pre><pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+
+<pre><span id="VALcurr"><span class="keyword">val</span> curr</span> : <code class="type">unit -> 'a <a href="Revisions.Versioned.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">curr ()</code> returns the value at the current version.<br>
+</div>
+<div class="param_info"><table border="0" cellpadding="3" width="100%">
+<tr>
+<td align="left" valign="top" width="1%"><b>Parameters: </b></td>
+<td>
+<table class="paramstable">
+<tr>
+<td align="center" valign="top" width="15%" class="code">
+?</td>
+<td align="center" valign="top">:</td>
+<td><code class="type">unit</code><br>
+
+</tr>
+</table>
+</td>
+</tr>
+</table></div>
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">r:'a R.t -> 'a <a href="Revisions.Versioned.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">get r</code> returns the versioned type at revision <code class="code">r</code>.<br>
+</div>
+<div class="param_info"><table border="0" cellpadding="3" width="100%">
+<tr>
+<td align="left" valign="top" width="1%"><b>Parameters: </b></td>
+<td>
+<table class="paramstable">
+<tr>
+<td align="center" valign="top" width="15%" class="code">
+r</td>
+<td align="center" valign="top">:</td>
+<td><code class="type">'a R.t</code><br>
+the revision of the type being fetched
+</tr>
+</table>
+</td>
+</tr>
+</table></div>
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">r:'a R.t -> v:'a <a href="Revisions.Versioned.html#TYPEt">t</a> -> 'a <a href="Revisions.Versioned.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">set r v</code> sets the value of the versioned type at revision <code class="code">r</code> to <code class="code">v</code>,
+      returning the type at revision <code class="code">r</code>.<br>
+</div>
+<div class="param_info"><table border="0" cellpadding="3" width="100%">
+<tr>
+<td align="left" valign="top" width="1%"><b>Parameters: </b></td>
+<td>
+<table class="paramstable">
+<tr>
+<td align="center" valign="top" width="15%" class="code">
+r</td>
+<td align="center" valign="top">:</td>
+<td><code class="type">'a R.t</code><br>
+the revision of the type being set
+</tr>
+<tr>
+<td align="center" valign="top" width="15%" class="code">
+v</td>
+<td align="center" valign="top">:</td>
+<td><code class="type">'a <a href="Revisions.Versioned.html#TYPEt">t</a></code><br>
+the value being set
+</tr>
+</table>
+</td>
+</tr>
+</table></div>
+</body></html>

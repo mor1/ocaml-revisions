@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Revisions" rel="Chapter" href="Revisions.html"><title>Revisions</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Revisions.html">Revisions</a></h1>
+<pre><span class="keyword">module</span> Revisions: <code class="code"><span class="keyword">sig</span></code> <a href="Revisions.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Revisions and versioned types, from "<i><a href="
+    http://dx.doi.org/10.1145/1869459.1869515">Concurrent Programming with
+    Revisions and Isolation Types</a></i>", Burckhardt, Baldassin, Leijen. OOPSLA
+    2010.
+<p>
+
+    The OOPSLA'10 paper describes a mechanism for simplyfying parallel
+    execution of different application tasks. From the abstract:
+<p>
+
+    "Programmers declare what data they wish to share between tasks by using
+    isolation types, and execute tasks concurrently by forking and joining
+    revisions. These revisions are isolated: they read and modify their own
+    private copy of the shared data only. A runtime creates and merges copies
+    automatically, and resolves conflicts deterministically, in a manner
+    declared by the chosen isolation type."<br>
+<b>Author(s):</b> Richard Mortier &lt;mort@cantab.net&gt;<br>
+<b>Version:</b> 0.0.1<br>
+</div>
+<hr width="100%">
+<pre><span class="keyword">module type</span> <a href="Revisions.Revision.html">Revision</a> = <code class="code"><span class="keyword">sig</span></code> <a href="Revisions.Revision.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+</div>
+<pre><span class="keyword">module type</span> <a href="Revisions.Versioned.html">Versioned</a> = <code class="code"><span class="keyword">sig</span></code> <a href="Revisions.Versioned.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Implements the <em>isolation type</em> referred to above.
+</div>
+</body></html>
