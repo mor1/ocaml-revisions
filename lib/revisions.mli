@@ -47,68 +47,139 @@
 
 *)
 
-(**
-*)
-module type Revision = sig
+type 'a versioned
+type 'a revision
+type 'a segment
+type task
 
-  type 'a t
+
+(** Implements the {e isolation type} referred to above. Used to declare data
+    shared between concurrently executing [Revision]s. 
+ 
+ *)
+module Versioned : sig
+
+  (** [get vt r] returns the value of the versioned type [vt] at revision [r].
+
+      @param vt the concrete versioned data
+      @param r the revision of the type being fetched
+   *)
+  val get: vt:'a versioned -> r:'a revision -> 'a
+
+  (** [curr vt] returns the value in [vt] at the current revision.
+
+      @param vt the concrete versioned data
+   *)
+  val curr: vt:'a versioned -> 'a
+  
+  (** [set vt r v] sets the value of the versioned type [vt] at revision [r]
+      to [v], returning the type at revision [r].
+      
+      @param vt the concrete versioned data
+      @param r the revision of the type being set
+      @param v the value being set
+   *)
+  val set: vt:'a versioned -> r:'a revision -> v:'a -> unit
+
+  (** [release vt release] marks the entry in [vt] for the [release] segment
+      version as null.
+
+      @param vt the concrete versioned data
+      @param release the segment to release
+   *)
+  val release: vt: 'a versioned -> release:'a segment -> unit
+
+  (** [collapse main parent] XXX
+   *)
+  val collapse: main:'a revision -> parent:'a segment -> unit
+
+  (** [merge main join_rev joiner] 
+   *)
+  val merge: main:'a revision -> join_rev:'a revision -> joiner:'a segment -> unit
+
+end
+
+
+(** Implements the {! Segment}, the container for shared state between
+    revisions. Essentially contains its own version number, a reference
+    counter for its child segments, a reference to its parent, plus a list of
+    the shared ([Versioned]) data. Currently this list is an ['a versioned
+    list], i.e., restricted to a particular ['a] -- ideally this would just be
+    a [versioned list].
+
+ *)
+module Segment : sig
+
+  (** [create parent] generates a new ['a segment] with the specified parent.
+   *)
+  val create: parent:'a segment -> 'a segment
+
+  (** [release target] is called to decrement [target]'s refcount and
+      potentially garbage collect it by releasing all its [Versioned]
+      variables, and its parent.
+
+   *)
+  val release: target:'a segment -> unit
+
+  (** [collapse main] collapses the graph if it consists of a single thread of
+      segments up to [main]. This entails in turn collapsing all the versioned
+      data in each immediate parent and removing that parent.
+      
+   *)
+  val collapse: main:'a revision -> unit
+
+end
+
+
+(** Implements the [Revision], the basic unit of concurrency. Essentially
+    contains references to the current and root {! Segment}s, plus some [task]
+    structure (for now, a {! Thread.t}).
+
+    [Revision]s essentially function as asynchronous tasks that are forked and
+    joined, and may fork and join other revisions. Conceptually similar to
+    revisions (branches) in revision control systems, and so (logically)
+    records HEAD and ROOT.
+
+    Note that the main thread is itself considered a revision, and all forked
+    revisions {b must} be explicitly joined. Represented as a vertical line
+    joining two {! Segment}s in a Revision Diagram.
+
+ *)
+module Revision : sig
+
+  (** [create root curr]
+   *)
+  val create: root:'a segment -> curr:'a segment -> 'a revision
 
   (** [fork action] returns a new revision based off the current revision,
       running the action [action] within.
 
       @param action concurrent task started by fork in new revision
    *)
-  val fork: action:(unit -> unit) -> 'a t
+  val fork: action:(unit -> unit) -> 'a revision
   
-  (** [join join] waits until the concurrent task association with revision
-      [join] is done.
+  (** [join joiner] waits until the concurrent task association with revision
+      [joiner] is done.
 
-      @param join revision being joined (the {e joiner})
+      @param joiner revision being joined
    *)
-  val join: join:'a t -> unit
+  val join: joiner:'a revision -> unit
 
 end
 
-(** Implements the {e isolation type} referred to above. Used to declare data
-    shared between concurrently executing {e revisions}. 
- *)
-module type Versioned = sig
-
-  module R : Revision
-
-  type 'a t
-
-  (** [curr ()] returns the value at the current version. *)
-  val curr: unit -> 'a t      
-
-  (** [get r] returns the versioned type at revision [r].
-
-      @param r the revision of the type being fetched
-   *)
-  val get: r:'a R.t -> 'a t
-
-  (** [set r v] sets the value of the versioned type at revision [r] to [v],
-      returning the type at revision [r].
-      
-      @param r the revision of the type being set
-      @param v the value being set
-   *)
-  val set: r:'a R.t -> v:'a t -> 'a t
-
-end
 
 (*
-module type Cumulative = sig
+  module type Cumulative = sig
 
   type 'a t
 
-  (** [merge original master revised] called when merging results of a
-      versioned type.
-      
-      @param original original value at the time the revision forked
-      @param master current value in the revision performing the join
-      @param revised current value in the revision joining
-   *)
+(** [merge original master revised] called when merging results of a
+  versioned type.
+  
+  @param original original value at the time the revision forked
+  @param master current value in the revision performing the join
+  @param revised current value in the revision joining
+ *)
   val merge: original:'a t -> master:'a t -> revised:'a t -> 'a t
 
 end
