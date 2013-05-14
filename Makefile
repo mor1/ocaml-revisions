@@ -13,19 +13,20 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 .PHONY: all configure build clean
-FLAGS ?=
+FLAGS ?= 
 CFLAGS ?= --annot
-BFLAGS ?= 
+BFLAGS ?=
 
-OCAMLDOC=ocamlfind ocamldoc -html -sort -v -colorize-code -all-params
+OCAMLDOC=ocamlfind ocamldoc \
+	-html -sort -v -colorize-code -all-params
 
 all: configure build
 
 configure:
-	obuild configure $(CFLAGS)
+	obuild configure $(FLAGS) $(CFLAGS)
 
 build: configure
-	obuild build $(BFLAGS)
+	obuild build $(FLAGS) $(BFLAGS)
 
 clean:
 	obuild clean
