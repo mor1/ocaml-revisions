@@ -11,8 +11,8 @@ obuild-ver: 1
 
 library revisions
   path: lib
-  modules: revisionso
-  build-deps: lwt, lwt.syntax
+  modules: revisions
+  build-deps: lwt, lwt.syntax, unix, threads
 
 #test simple
 #  path: lib_tests
